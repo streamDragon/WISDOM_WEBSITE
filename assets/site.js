@@ -1,7 +1,6 @@
 (function () {
   const body = document.body;
   const root = body.dataset.root || './';
-  const storageKey = 'wisdom-language';
 
   function path(url) {
     if (!url) return '#';
@@ -9,66 +8,26 @@
     return root + url;
   }
 
-  function resolveLanguage() {
-    const params = new URLSearchParams(window.location.search);
-    const queryLang = params.get('lang');
-    if (queryLang === 'he' || queryLang === 'en') return queryLang;
-    const stored = localStorage.getItem(storageKey);
-    if (stored === 'he' || stored === 'en') return stored;
-    return 'en';
+  function currentLanguage() {
+    return window.location.pathname === '/he' || window.location.pathname.startsWith('/he/') ? 'he' : 'en';
   }
 
-  function setLanguage(lang, persist) {
-    const isHebrew = lang === 'he';
-    document.documentElement.lang = lang;
-    document.documentElement.dir = isHebrew ? 'rtl' : 'ltr';
-    body.classList.toggle('lang-he', isHebrew);
-    body.classList.toggle('lang-en', !isHebrew);
-    if (persist !== false) localStorage.setItem(storageKey, lang);
+  function counterpartUrl(targetLanguage) {
+    let pathname = window.location.pathname || '/';
 
-    document.querySelectorAll('[data-en][data-he]').forEach((el) => {
-      el.innerHTML = isHebrew ? el.dataset.he : el.dataset.en;
-    });
-
-    document.querySelectorAll('[data-set-lang]').forEach((button) => {
-      const active = button.dataset.setLang === lang;
-      button.classList.toggle('is-active', active);
-      button.setAttribute('aria-pressed', String(active));
-    });
-
-    document.querySelectorAll('[data-contact]').forEach((el) => {
-      const config = window.WISDOM_CONFIG || {};
-      el.textContent = config.generalContact || (isHebrew ? 'פרטי קשר יתווספו בקרוב' : 'Contact details coming soon');
-    });
-
-    document.querySelectorAll('[data-documentation-link]').forEach((el) => {
-      const url = window.WISDOM_CONFIG && window.WISDOM_CONFIG.documentationUrl;
-      if (url) {
-        el.setAttribute('href', url);
-        el.textContent = isHebrew ? 'תיעוד' : 'Documentation';
-      } else {
-        el.removeAttribute('href');
-        el.setAttribute('aria-disabled', 'true');
-        el.textContent = isHebrew ? 'התיעוד יעלה בהמשך' : 'Documentation coming soon';
+    if (targetLanguage === 'he') {
+      if (!(pathname === '/he' || pathname.startsWith('/he/'))) {
+        pathname = pathname === '/' ? '/he/' : '/he' + pathname;
       }
-    });
-
-    document.querySelectorAll('[data-asset-store-cta]').forEach((el) => {
-      const url = window.WISDOM_CONFIG && window.WISDOM_CONFIG.assetStoreUrl;
-      if (url) {
-        el.setAttribute('href', url);
-        el.removeAttribute('aria-disabled');
-        el.classList.remove('button--disabled');
-        el.textContent = isHebrew ? 'לצפייה ב-Unity Asset Store' : 'View on Unity Asset Store';
-      } else {
-        el.removeAttribute('href');
-        el.setAttribute('aria-disabled', 'true');
-        el.classList.add('button--disabled');
-        el.textContent = isHebrew ? 'בקרוב' : 'Coming Soon';
+    } else {
+      if (pathname === '/he' || pathname === '/he/') {
+        pathname = '/';
+      } else if (pathname.startsWith('/he/')) {
+        pathname = pathname.slice(3) || '/';
       }
-    });
+    }
 
-    renderProductGrids(lang);
+    return pathname + window.location.search + window.location.hash;
   }
 
   function mediaFor(product) {
@@ -95,17 +54,30 @@
     });
   }
 
+  const language = currentLanguage();
+  document.documentElement.lang = language;
+  document.documentElement.dir = language === 'he' ? 'rtl' : 'ltr';
+  body.classList.toggle('lang-he', language === 'he');
+  body.classList.toggle('lang-en', language === 'en');
+
   document.querySelectorAll('.header-inner').forEach((header) => {
     if (header.querySelector('.language-toggle')) return;
     const wrap = document.createElement('div');
     wrap.className = 'language-toggle';
-    wrap.innerHTML = '<button type="button" data-set-lang="en">EN</button><button type="button" data-set-lang="he">עב</button>';
+    wrap.setAttribute('aria-label', language === 'he' ? 'בחירת שפה' : 'Language');
+    wrap.innerHTML = '<button type="button" data-set-lang="en">EN</button><button type="button" data-set-lang="he">עברית</button>';
     const toggle = header.querySelector('.nav-toggle');
     header.insertBefore(wrap, toggle || null);
   });
 
   document.querySelectorAll('[data-set-lang]').forEach((button) => {
-    button.addEventListener('click', () => setLanguage(button.dataset.setLang === 'he' ? 'he' : 'en', true));
+    const targetLanguage = button.dataset.setLang === 'he' ? 'he' : 'en';
+    const active = targetLanguage === language;
+    button.classList.toggle('is-active', active);
+    button.setAttribute('aria-pressed', String(active));
+    button.addEventListener('click', () => {
+      if (!active) window.location.href = counterpartUrl(targetLanguage);
+    });
   });
 
   document.querySelectorAll('[data-nav-toggle]').forEach((button) => {
@@ -117,7 +89,41 @@
     });
   });
 
-  document.querySelectorAll('[data-year]').forEach((el) => { el.textContent = new Date().getFullYear(); });
+  document.querySelectorAll('[data-contact]').forEach((el) => {
+    const config = window.WISDOM_CONFIG || {};
+    el.textContent = config.generalContact || (language === 'he' ? 'פרטי קשר יתווספו בקרוב' : 'Contact details coming soon');
+  });
 
-  setLanguage(resolveLanguage(), false);
+  document.querySelectorAll('[data-documentation-link]').forEach((el) => {
+    const url = window.WISDOM_CONFIG && window.WISDOM_CONFIG.documentationUrl;
+    if (url) {
+      el.setAttribute('href', url);
+      el.textContent = language === 'he' ? 'תיעוד' : 'Documentation';
+    } else {
+      el.removeAttribute('href');
+      el.setAttribute('aria-disabled', 'true');
+      el.textContent = language === 'he' ? 'התיעוד יעלה בהמשך' : 'Documentation coming soon';
+    }
+  });
+
+  document.querySelectorAll('[data-asset-store-cta]').forEach((el) => {
+    const url = window.WISDOM_CONFIG && window.WISDOM_CONFIG.assetStoreUrl;
+    if (url) {
+      el.setAttribute('href', url);
+      el.removeAttribute('aria-disabled');
+      el.classList.remove('button--disabled');
+      el.textContent = language === 'he' ? 'לצפייה ב-Unity Asset Store' : 'View on Unity Asset Store';
+    } else {
+      el.removeAttribute('href');
+      el.setAttribute('aria-disabled', 'true');
+      el.classList.add('button--disabled');
+      el.textContent = language === 'he' ? 'בקרוב' : 'Coming Soon';
+    }
+  });
+
+  document.querySelectorAll('[data-year]').forEach((el) => {
+    el.textContent = new Date().getFullYear();
+  });
+
+  renderProductGrids(language);
 })();
