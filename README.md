@@ -26,4 +26,4 @@ Open `http://localhost:8080/`.
 
 Production hosting: Vercel.
 
-The site has no build step. The intended deployment source is the `main` branch of this repository. Once Git integration is enabled for the Vercel `wisdom` project, pushes to `main` deploy automatically.
+The site has no build step. The deployment source is the `main` branch of this repository. Vercel Git integration is connected, so pushes to `main` deploy automatically.
