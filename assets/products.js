@@ -2,20 +2,28 @@ window.WISDOM_PRODUCTS = [
   {
     slug: 'cutscene-studio',
     name: 'WISDOM Cutscene Studio',
-    category: 'Unity Developer Tool',
+    category: 'Unity Creative Tool',
     status: 'In Development / Coming Soon',
-    shortDescription: 'Create editable cinematic scenes inside your Unity project by working with the AI assistant you already prefer.',
+    shortDescription: 'Create editable cinematic scenes inside Unity with the AI assistant you already prefer, grounded in the real assets and capabilities of your project.',
     productPage: 'products/cutscene-studio/',
-    visualType: 'cutscene'
+    media: {
+      type: 'image',
+      src: 'assets/illustrations/cutscene-studio.svg',
+      alt: 'Cinematic storyboard and timeline for WISDOM Cutscene Studio.'
+    }
   },
   {
     slug: 'game',
     name: 'Escape to Mars',
     category: 'Game',
     status: 'Coming to Steam',
-    shortDescription: 'An original co-op game about getting humanity off Earth and making the journey to Mars.',
+    shortDescription: 'An original cinematic co-op game about getting humanity off a collapsing Earth and fighting toward a new future on Mars.',
     productPage: 'products/game/',
-    visualType: 'mars'
+    media: {
+      type: 'image',
+      src: 'assets/illustrations/escape-to-mars.svg',
+      alt: 'Spaceships leaving Earth on a cinematic route toward Mars.'
+    }
   },
   {
     slug: 'mathematics',
@@ -26,8 +34,8 @@ window.WISDOM_PRODUCTS = [
     productPage: 'products/mathematics/',
     media: {
       type: 'image',
-      src: 'https://raw.githubusercontent.com/streamDragon/MATH_VISUAL_APP/main/screenshots/functions-workplace.png',
-      alt: 'Visual Mathematics application showing an exercise, interactive graph and learning tools.'
+      src: 'assets/illustrations/math-app.svg',
+      alt: 'Interactive graphs and visual mathematics learning interface.'
     }
   },
   {
@@ -39,8 +47,8 @@ window.WISDOM_PRODUCTS = [
     productPage: 'products/meta-model/',
     media: {
       type: 'image',
-      src: 'https://raw.githubusercontent.com/streamDragon/Meta_Model_app/main/assets/iceberg_lego.png',
-      alt: 'Visual illustration used inside Meta Model Gym.'
+      src: 'assets/illustrations/meta-model.svg',
+      alt: 'Dialogue and language structure visual for Meta Model Gym.'
     }
   }
 ];
@@ -49,9 +57,9 @@ window.WISDOM_PRODUCTS_HE = [
   {
     slug: 'cutscene-studio',
     name: 'WISDOM Cutscene Studio',
-    category: 'כלי למפתחי Unity',
+    category: 'כלי יצירתי ל-Unity',
     status: 'בפיתוח / בקרוב',
-    shortDescription: 'יוצרים סצנות קולנועיות ניתנות לעריכה בתוך פרויקט Unity באמצעות הבינה המלאכותית שאתם כבר מעדיפים לעבוד איתה.',
+    shortDescription: 'יוצרים סצנות קולנועיות ניתנות לעריכה בתוך Unity בעזרת הבינה המלאכותית שאתם כבר מעדיפים לעבוד איתה, תוך עיגון בנכסים וביכולות האמיתיים של הפרויקט.',
     productPage: 'products/cutscene-studio/'
   },
   {
@@ -59,7 +67,7 @@ window.WISDOM_PRODUCTS_HE = [
     name: 'Escape to Mars',
     category: 'משחק',
     status: 'בקרוב ב-Steam',
-    shortDescription: 'משחק קואופרטיבי מקורי על פינוי האנושות מכדור הארץ והמסע למאדים.',
+    shortDescription: 'משחק קואופרטיבי קולנועי מקורי על פינוי האנושות מכדור הארץ הקורס והמאבק לעבר עתיד חדש במאדים.',
     productPage: 'products/game/'
   },
   {
