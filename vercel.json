@@ -1,0 +1,7 @@
+{
+  "redirects": [
+    { "source": "/he", "destination": "/?lang=he", "permanent": true },
+    { "source": "/he/", "destination": "/?lang=he", "permanent": true },
+    { "source": "/he/:path*", "destination": "/:path*?lang=he", "permanent": true }
+  ]
+}
