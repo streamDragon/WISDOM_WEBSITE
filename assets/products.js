@@ -5,7 +5,8 @@ window.WISDOM_PRODUCTS = [
     category: 'Unity Developer Tool',
     status: 'In Development / Coming Soon',
     shortDescription: 'Create editable cinematic scenes inside your Unity project by working with the AI assistant you already prefer.',
-    productPage: 'products/cutscene-studio/'
+    productPage: 'products/cutscene-studio/',
+    visualType: 'cutscene'
   },
   {
     slug: 'game',
@@ -13,7 +14,8 @@ window.WISDOM_PRODUCTS = [
     category: 'Game',
     status: 'Coming to Steam',
     shortDescription: 'An original co-op game about getting humanity off Earth and making the journey to Mars.',
-    productPage: 'products/game/'
+    productPage: 'products/game/',
+    visualType: 'mars'
   },
   {
     slug: 'mathematics',
@@ -21,7 +23,12 @@ window.WISDOM_PRODUCTS = [
     category: 'Education',
     status: 'In Development',
     shortDescription: 'A visual mathematics learning app for students, built around interactive graphs, guided practice, immediate feedback and parameter exploration.',
-    productPage: 'products/mathematics/'
+    productPage: 'products/mathematics/',
+    media: {
+      type: 'image',
+      src: 'https://raw.githubusercontent.com/streamDragon/MATH_VISUAL_APP/main/screenshots/functions-workplace.png',
+      alt: 'Visual Mathematics application showing an exercise, interactive graph and learning tools.'
+    }
   },
   {
     slug: 'meta-model',
@@ -29,7 +36,12 @@ window.WISDOM_PRODUCTS = [
     category: 'Language & NLP',
     status: 'In Development',
     shortDescription: 'A language practice tool for spotting vague patterns, asking sharper questions and turning unclear language into clearer choices and actions.',
-    productPage: 'products/meta-model/'
+    productPage: 'products/meta-model/',
+    media: {
+      type: 'image',
+      src: 'https://raw.githubusercontent.com/streamDragon/Meta_Model_app/main/assets/iceberg_lego.png',
+      alt: 'Visual illustration used inside Meta Model Gym.'
+    }
   }
 ];
 

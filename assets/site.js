@@ -3,6 +3,14 @@
   const root = body.dataset.root || './';
   const isHebrew = document.documentElement.lang === 'he';
 
+  if (!document.querySelector('link[data-wisdom-visuals]')) {
+    const visualCss = document.createElement('link');
+    visualCss.rel = 'stylesheet';
+    visualCss.href = root + 'assets/visuals.css';
+    visualCss.dataset.wisdomVisuals = 'true';
+    document.head.appendChild(visualCss);
+  }
+
   function path(url) {
     if (!url) return '#';
     return root + url;
@@ -11,12 +19,23 @@
   function counterpartUrl() {
     const p = window.location.pathname;
     let next;
-    if (isHebrew) {
-      next = p.replace(/\/he(?=\/|$)/, '') || '/';
-    } else {
-      next = p === '/' ? '/he/' : '/he' + p;
-    }
+    if (isHebrew) next = p.replace(/\/he(?=\/|$)/, '') || '/';
+    else next = p === '/' ? '/he/' : '/he' + p;
     return next + window.location.search + window.location.hash;
+  }
+
+  function mediaFor(product) {
+    const canonical = (window.WISDOM_PRODUCTS || []).find((x) => x.slug === product.slug) || product;
+    if (canonical.media && canonical.media.type === 'image') {
+      return `<div class="product-card__media"><img src="${canonical.media.src}" alt="${canonical.media.alt || ''}" loading="lazy"></div>`;
+    }
+    if (canonical.visualType === 'mars') {
+      return `<div class="product-card__media product-card__media--art"><div class="visual-mars" aria-hidden="true"><span class="mars-earth"></span><span class="mars-route"></span><span class="mars-planet"></span><span class="mars-ship mars-ship--1"></span><span class="mars-ship mars-ship--2"></span></div></div>`;
+    }
+    if (canonical.visualType === 'cutscene') {
+      return `<div class="product-card__media product-card__media--art"><div class="visual-cutscene" aria-hidden="true"><div class="cutscene-frame"><span></span><span></span><span></span></div><div class="cutscene-timeline"><i></i><i></i><i></i><i></i></div></div></div>`;
+    }
+    return '';
   }
 
   document.querySelectorAll('.header-inner').forEach((header) => {
@@ -35,6 +54,7 @@
   document.querySelectorAll('[data-nav-toggle]').forEach((button) => {
     button.addEventListener('click', () => {
       const nav = document.querySelector('[data-mobile-nav]');
+      if (!nav) return;
       const open = nav.classList.toggle('is-open');
       button.setAttribute('aria-expanded', String(open));
     });
@@ -46,6 +66,7 @@
     const products = (source || []).slice(0, limit);
     grid.innerHTML = products.map((product, index) => `
       <a class="product-card" href="${path(product.productPage)}" style="--card-index:${index}">
+        ${mediaFor(product)}
         <div class="product-card__top"><span class="eyebrow">${product.category}</span></div>
         <div><h3>${product.name}</h3><p>${product.shortDescription}</p></div>
         <div class="product-card__footer"><span class="status-dot" aria-hidden="true"></span><span>${product.status}</span><span class="arrow" aria-hidden="true">↗</span></div>
