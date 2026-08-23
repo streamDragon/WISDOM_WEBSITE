@@ -3,14 +3,6 @@
   const root = body.dataset.root || './';
   const isHebrew = document.documentElement.lang === 'he';
 
-  if (!document.querySelector('link[data-wisdom-visuals]')) {
-    const visualCss = document.createElement('link');
-    visualCss.rel = 'stylesheet';
-    visualCss.href = root + 'assets/visuals.css';
-    visualCss.dataset.wisdomVisuals = 'true';
-    document.head.appendChild(visualCss);
-  }
-
   function path(url) {
     if (!url) return '#';
     return root + url;
@@ -28,12 +20,6 @@
     const canonical = (window.WISDOM_PRODUCTS || []).find((x) => x.slug === product.slug) || product;
     if (canonical.media && canonical.media.type === 'image') {
       return `<div class="product-card__media"><img src="${canonical.media.src}" alt="${canonical.media.alt || ''}" loading="lazy"></div>`;
-    }
-    if (canonical.visualType === 'mars') {
-      return `<div class="product-card__media product-card__media--art"><div class="visual-mars" aria-hidden="true"><span class="mars-earth"></span><span class="mars-route"></span><span class="mars-planet"></span><span class="mars-ship mars-ship--1"></span><span class="mars-ship mars-ship--2"></span></div></div>`;
-    }
-    if (canonical.visualType === 'cutscene') {
-      return `<div class="product-card__media product-card__media--art"><div class="visual-cutscene" aria-hidden="true"><div class="cutscene-frame"><span></span><span></span><span></span></div><div class="cutscene-timeline"><i></i><i></i><i></i><i></i></div></div></div>`;
     }
     return '';
   }
